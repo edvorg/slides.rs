@@ -200,7 +200,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "slides"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "serde 1.0.82 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.82 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -214,7 +214,7 @@ dependencies = [
 name = "slides_frontend"
 version = "0.1.0"
 dependencies = [
- "slides 0.1.1",
+ "slides 0.1.2",
 ]
 
 [[package]]

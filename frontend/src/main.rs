@@ -7,7 +7,11 @@ fn main() {
         Story {
             slides: vec!(
                 Slide::Text(String::from("Full-stack web development with Rust")),
-                Slide::Image("rust-logo.png", String::from("Rust is a systems programming language")),
+                Slide::Image("rust-logo.png", String::from("Rust is a system programming language")),
+                Slide::List(String::from("Rust strengths"), vec!(
+                    String::from("Safety"),
+                    String::from("Performance"),
+                )),
                 Slide::Text(String::from("Web assembly is binary executable format")),
                 Slide::Text(String::from("Eduard Knyshov @edvorg")),
             )

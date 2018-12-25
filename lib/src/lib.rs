@@ -14,10 +14,12 @@ use stdweb::unstable::TryInto;
 /// Available slide types:
 /// - Image: displays an image and a caption string
 /// - Test: displays a string
+/// - List: a list of items with a title
 #[derive(Clone)]
 pub enum Slide {
     Text(String),
-    Image(&'static str, String)
+    Image(&'static str, String),
+    List(String, Vec<String>),
 }
 
 /// Represents a story: list of slides
@@ -82,6 +84,14 @@ impl Component<Registry> for RootModel {
     }
 }
 
+impl RootModel {
+    fn list_item_view(&self, string: &String) -> Html<Registry, RootModel> {
+        html! {
+          <li> { string } </li>
+        }
+    }
+}
+
 impl Renderable<Registry, RootModel> for RootModel {
     fn view(&self) -> Html<Registry, RootModel> {
         let current_slide = &self.story.slides[self.current_slide];
@@ -110,6 +120,16 @@ impl Renderable<Registry, RootModel> for RootModel {
                   <div class="slide",>
                     <img src=resource, />
                     { string }
+                  </div>
+                </div>
+                }
+            }
+            (_, Slide::List(title, list)) => {
+                html! {
+                <div class="slide-wrapper",>
+                  <div class="slide",>
+                    { title }
+                    <ul> { for list.iter().map(|i| self.list_item_view(i)) } </ul>
                   </div>
                 </div>
                 }
