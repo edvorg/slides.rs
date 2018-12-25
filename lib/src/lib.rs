@@ -10,12 +10,17 @@ use yew::services::console::ConsoleService;
 use stdweb::Value;
 use stdweb::unstable::TryInto;
 
+/// Represents a single slide
+/// Available slide types:
+/// - Image: displays an image and a caption string
+/// - Test: displays a string
 #[derive(Clone)]
 pub enum Slide {
     Text(String),
     Image(&'static str, String)
 }
 
+/// Represents a story: list of slides
 pub struct Story {
     pub slides: Vec<Slide>,
 }
@@ -113,6 +118,7 @@ impl Renderable<Registry, RootModel> for RootModel {
     }
 }
 
+/// Run slides engine with provided story
 pub fn run(story: Story) {
     yew::initialize();
     let registry = Registry {
