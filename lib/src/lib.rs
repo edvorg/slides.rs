@@ -4,8 +4,6 @@ extern crate yew;
 extern crate stdweb;
 
 use yew::prelude::*;
-use stdweb::web::document;
-use stdweb::web::INonElementParentNode;
 use yew::services::console::ConsoleService;
 use stdweb::Value;
 use stdweb::unstable::TryInto;
