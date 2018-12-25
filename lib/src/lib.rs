@@ -10,7 +10,8 @@ use yew::services::console::ConsoleService;
 use stdweb::Value;
 use stdweb::unstable::TryInto;
 
-/// Represents a single slide
+/// Represents a single slide.
+///
 /// Available slide types:
 /// - Image: displays an image and a caption string
 /// - Test: displays a string
