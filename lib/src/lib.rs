@@ -11,16 +11,17 @@ use stdweb::Value;
 use stdweb::unstable::TryInto;
 
 #[derive(Clone)]
-enum Slide {
+pub enum Slide {
     Text(String),
 }
 
-struct Story {
-    slides: Vec<Slide>,
+pub struct Story {
+    pub slides: Vec<Slide>,
 }
 
 struct Registry {
     console: ConsoleService,
+    story: Option<Story>,
 }
 
 struct RootModel {
@@ -48,14 +49,9 @@ impl Component<Registry> for RootModel {
             cb(e.keyCode);
           })
         };
+        let story = context.story.take().unwrap_or_else(|| Story { slides: vec!() });
         RootModel {
-            story: Story {
-                slides: vec!(
-                    Slide::Text(String::from("slide one")),
-                    Slide::Text(String::from("slide two")),
-                    Slide::Text(String::from("slide three")),
-                )
-            },
+            story,
             current_slide: 0,
             handle,
         }
@@ -83,8 +79,17 @@ impl Component<Registry> for RootModel {
 impl Renderable<Registry, RootModel> for RootModel {
     fn view(&self) -> Html<Registry, RootModel> {
         let current_slide = &self.story.slides[self.current_slide];
-        match current_slide {
-            Slide::Text(string) => {
+        match (self.story.slides.len(), current_slide) {
+            (0, _) => {
+                html! {
+                <div class="slide-wrapper",>
+                  <div class="slide",>
+                    { "Nothing to display" }
+                  </div>
+                </div>
+                }
+            }
+            (_, Slide::Text(string)) => {
                 html! {
                 <div class="slide-wrapper",>
                   <div class="slide",>
@@ -97,10 +102,11 @@ impl Renderable<Registry, RootModel> for RootModel {
     }
 }
 
-pub fn run() {
+pub fn run(story: Story) {
     yew::initialize();
     let registry = Registry {
         console: ConsoleService::new(),
+        story: Some(story),
     };
     let app = App::<Registry, RootModel>::new(registry);
     app.mount(document().get_element_by_id("app").expect("div with id app not found"));
