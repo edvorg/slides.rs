@@ -23,7 +23,7 @@ pub enum Slide {
     Code(String, String),
 }
 
-/// Represents a story: list of slides
+/// Represents a story (list of slides).
 pub struct Story {
     pub slides: Vec<Slide>,
 }
@@ -149,7 +149,7 @@ impl Renderable<Registry, RootModel> for RootModel {
     }
 }
 
-/// Run slides engine with provided story
+/// Run slides engine with provided story.
 pub fn run(story: Story) {
     yew::initialize();
     let registry = Registry {
