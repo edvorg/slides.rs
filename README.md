@@ -6,6 +6,8 @@ Slides engine in rust
 
 [Crate](https://crates.io/crates/slides)
 
+[Demo](https://edvorg.github.io/slides.rs)
+
 ## Getting started
 
 Create an empty WASM project:
