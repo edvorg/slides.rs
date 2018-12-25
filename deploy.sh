@@ -13,10 +13,11 @@ cargo clean
 cargo web deploy -p slides_frontend --target wasm32-unknown-unknown --release
 
 git checkout gh-pages
-rm *.css
-rm *.html
-rm *.js
-rm *.wasm
+rm -f *.css
+rm -f *.html
+rm -f *.js
+rm -f *.wasm
+rm -f *.png
 mv -f target/deploy/* ./
 
 CSS_CHECKSUM=$(md5sum index.css | awk '{print $1}' | xargs echo -n)
@@ -30,6 +31,7 @@ git add *.css
 git add *.html
 git add *.js
 git add *.wasm
+git add *.png
 
 git commit -m "update"
 git push origin gh-pages
