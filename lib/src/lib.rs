@@ -158,6 +158,6 @@ pub fn run(story: Story) {
         story: Some(story),
     };
     let app = App::<Registry, RootModel>::new(registry);
-    app.mount(document().get_element_by_id("app").expect("div with id app not found"));
+    app.mount_to_body();
     yew::run_loop();
 }
