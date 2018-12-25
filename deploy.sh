@@ -34,3 +34,5 @@ git commit -m "update"
 git push origin gh-pages
 
 popd
+
+git push origin gh-pages
