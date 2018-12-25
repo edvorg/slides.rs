@@ -1,14 +1,11 @@
 [package]
 name = "slides"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Eduard Knyshov <edvorg@gmail.com>"]
 description = "Slides engine in rust"
 edition = "2018"
 repository = "https://github.com/edvorg/slides.rs"
 license-file = "../LICENSE"
-
-[lib]
-crate-type = ["cdylib"]
 
 [dependencies]
 yew = "0.4.0"
