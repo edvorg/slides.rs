@@ -13,6 +13,7 @@ use stdweb::unstable::TryInto;
 #[derive(Clone)]
 pub enum Slide {
     Text(String),
+    Image(&'static str, String)
 }
 
 pub struct Story {
@@ -93,6 +94,16 @@ impl Renderable<Registry, RootModel> for RootModel {
                 html! {
                 <div class="slide-wrapper",>
                   <div class="slide",>
+                    { string }
+                  </div>
+                </div>
+                }
+            }
+            (_, Slide::Image(resource, string)) => {
+                html! {
+                <div class="slide-wrapper",>
+                  <div class="slide",>
+                    <img src=resource, />
                     { string }
                   </div>
                 </div>
