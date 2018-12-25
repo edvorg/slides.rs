@@ -14,6 +14,7 @@ fn main() {
                 )),
                 Slide::Text(String::from("Web assembly is binary executable format")),
                 Slide::Text(String::from("Eduard Knyshov @edvorg")),
+                Slide::Code(String::from("Hello World in Rust"), String::from("fn main() {\n  println!(\"Hello World\");\n}")),
             )
         }
     );

@@ -15,11 +15,13 @@ use stdweb::unstable::TryInto;
 /// - Image: displays an image and a caption string
 /// - Test: displays a string
 /// - List: a list of items with a title
+/// - Code: a code snipped with a title
 #[derive(Clone)]
 pub enum Slide {
     Text(String),
     Image(&'static str, String),
     List(String, Vec<String>),
+    Code(String, String),
 }
 
 /// Represents a story: list of slides
@@ -40,7 +42,7 @@ struct RootModel {
 }
 
 enum RootMessage {
-    Keydown(u8),
+    Keydown(u32),
 }
 
 impl Component<Registry> for RootModel {
@@ -48,7 +50,7 @@ impl Component<Registry> for RootModel {
     type Properties = ();
 
     fn create(_props: <Self as Component<Registry>>::Properties, context: &mut Env<Registry, Self>) -> Self {
-        let callback = context.send_back(|code: u8| RootMessage::Keydown(code));
+        let callback = context.send_back(|code: u32| RootMessage::Keydown(code));
         let js_callback = move |v: Value| { callback.emit(v.try_into().unwrap()) };
         let handle = js! {
           var cb = @{js_callback};
@@ -99,7 +101,7 @@ impl Renderable<Registry, RootModel> for RootModel {
             (0, _) => {
                 html! {
                 <div class="slide-wrapper",>
-                  <div class="slide",>
+                  <div class="slide",class="empty",>
                     { "Nothing to display" }
                   </div>
                 </div>
@@ -108,7 +110,7 @@ impl Renderable<Registry, RootModel> for RootModel {
             (_, Slide::Text(string)) => {
                 html! {
                 <div class="slide-wrapper",>
-                  <div class="slide",>
+                  <div class="slide",class="text",>
                     { string }
                   </div>
                 </div>
@@ -117,7 +119,7 @@ impl Renderable<Registry, RootModel> for RootModel {
             (_, Slide::Image(resource, string)) => {
                 html! {
                 <div class="slide-wrapper",>
-                  <div class="slide",>
+                  <div class="slide",class="image",>
                     <img src=resource, />
                     { string }
                   </div>
@@ -127,9 +129,19 @@ impl Renderable<Registry, RootModel> for RootModel {
             (_, Slide::List(title, list)) => {
                 html! {
                 <div class="slide-wrapper",>
-                  <div class="slide",>
+                  <div class="slide",class="list",>
                     { title }
                     <ul> { for list.iter().map(|i| self.list_item_view(i)) } </ul>
+                  </div>
+                </div>
+                }
+            }
+            (_, Slide::Code(title, code)) => {
+                html! {
+                <div class="slide-wrapper",>
+                  <div class="slide",class="code",>
+                    <div> { title } </div>
+                    <pre><code> { code } </code></pre>
                   </div>
                 </div>
                 }
