@@ -1,0 +1,9 @@
+[package]
+name = "slides_frontend"
+version = "0.1.0"
+authors = ["Eduard Knyshov <edvorg@gmail.com>"]
+description = "Slides engine in rust (Usage example)"
+edition = "2018"
+
+[dependencies]
+slides = { path = "../lib" }
