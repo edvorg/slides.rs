@@ -35,7 +35,7 @@ fn main() {
     run(
         Story {
             slides: vec!(
-                Slide::Text(String::from("Hello World")),
+                Slide::text("Hello World"),
             )
         }
     );
