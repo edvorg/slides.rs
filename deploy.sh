@@ -2,20 +2,19 @@
 
 set -e
 
-cargo clean
 cargo web deploy -p slides_frontend --target wasm32-unknown-unknown --release
 
 rm -rf ./gh-pages
-git clone -b gh-pages . ./gh-pages
-
-rm -f ./gh-pages/*.css
-rm -f ./gh-pages/*.html
-rm -f ./gh-pages/*.js
-rm -f ./gh-pages/*.wasm
-rm -f ./gh-pages/*.png
-mv -f ./target/deploy/* ./gh-pages/
+git clone -b gh-pages git@github.com:edvorg/slides.rs.git ./gh-pages
 
 pushd ./gh-pages
+
+rm -f ./*.css
+rm -f ./*.html
+rm -f ./*.js
+rm -f ./*.wasm
+rm -f ./*.png
+mv -f ../target/deploy/* ./
 
 CSS_CHECKSUM=$(md5sum ./index.css | awk '{print $1}' | xargs echo -n)
 FRONTEND_CHECKSUM=$(md5sum ./slides_frontend.wasm | awk '{print $1}' | xargs echo -n)
@@ -34,5 +33,3 @@ git commit -m "update"
 git push origin gh-pages
 
 popd
-
-git push origin gh-pages
