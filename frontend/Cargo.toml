@@ -1,6 +1,6 @@
 [package]
 name = "slides_frontend"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["Eduard Knyshov <edvorg@gmail.com>"]
 description = "Slides engine in rust (Usage example)"
 edition = "2018"
