@@ -1,8 +1,8 @@
 [[package]]
 name = "01_full_stack_web_development"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
- "slides 0.1.4",
+ "slides 0.1.5",
  "stdweb 0.4.12 (registry+https://github.com/rust-lang/crates.io-index)",
  "yew 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -209,7 +209,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "slides"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "serde 1.0.82 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.82 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -221,9 +221,9 @@ dependencies = [
 
 [[package]]
 name = "slides_frontend"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
- "slides 0.1.4",
+ "slides 0.1.5",
 ]
 
 [[package]]

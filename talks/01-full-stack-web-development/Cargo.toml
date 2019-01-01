@@ -1,6 +1,6 @@
 [package]
 name = "01_full_stack_web_development"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Eduard Knyshov <edvorg@gmail.com>"]
 description = "Full-Stack Web Development in Rust talk at Hong Kong Functional Programming meetup"
 edition = "2018"

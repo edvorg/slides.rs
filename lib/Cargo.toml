@@ -1,6 +1,6 @@
 [package]
 name = "slides"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Eduard Knyshov <edvorg@gmail.com>"]
 description = "Slides engine in rust"
 edition = "2018"
