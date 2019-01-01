@@ -12,6 +12,7 @@ use yew::services::timeout::TimeoutService;
 
 static PREFIX: &str = "#slide-";
 
+/// Data format for storing user-defined component state
 #[derive(Debug)]
 pub enum CustomData {
     Number(u64),
@@ -20,6 +21,7 @@ pub enum CustomData {
     Unit,
 }
 
+/// User defined component slide
 #[derive(Clone)]
 pub struct Custom {
     pub title: String,
@@ -35,6 +37,7 @@ pub struct Custom {
 /// - Image: displays an image and a caption string
 /// - List: a list of items with a title
 /// - Code: a code snipped with a title
+/// - Custom: a custom component with user-defined logic
 #[derive(Clone)]
 pub enum Slide {
     Title(String),
