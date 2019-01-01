@@ -21,15 +21,6 @@ pub enum CustomData {
     Unit,
 }
 
-/// User defined component slide
-#[derive(Clone)]
-pub struct Custom {
-    pub title: String,
-    pub init: Box<&'static Fn() -> CustomData>,
-    pub update: Box<&'static Fn(&mut CustomData, CustomData, &mut Env<Registry, RootModel>) -> bool>,
-    pub render: Box<&'static Fn(&CustomData) -> Html<Registry, RootModel>>,
-}
-
 /// Represents a single slide.
 ///
 /// Available slide types:
@@ -44,7 +35,12 @@ pub enum Slide {
     Image(&'static str, Option<String>, String),
     List(String, Vec<String>),
     Code(String, String),
-    Custom(Custom),
+    Custom {
+        title: String,
+        init: Box<&'static Fn() -> CustomData>,
+        update: Box<&'static Fn(&mut CustomData, CustomData, &mut Env<Registry, RootModel>) -> bool>,
+        render: Box<&'static Fn(&CustomData) -> Html<Registry, RootModel>>,
+    },
 }
 
 impl Slide {
@@ -76,14 +72,12 @@ impl Slide {
 
     /// short-hand function for creating a list slide
     pub fn custom(title: &str, init: &'static Fn() -> CustomData, update: &'static Fn(&mut CustomData, CustomData, &mut Env<Registry, RootModel>) -> bool, render: &'static Fn(&CustomData) -> Html<Registry, RootModel>) -> Slide {
-        Slide::Custom(
-            Custom {
-                title: String::from(title),
-                init: Box::new(init),
-                update: Box::new(update),
-                render: Box::new(render),
-            }
-        )
+        Slide::Custom {
+            title: String::from(title),
+            init: Box::new(init),
+            update: Box::new(update),
+            render: Box::new(render),
+        }
     }
 }
 
@@ -131,7 +125,7 @@ impl Component<Registry> for RootModel {
         let current_hash = RootModel::get_slide_hash(current_slide);
         RootModel::set_location_hash(&current_hash);
         let custom_data = match &story.slides[current_slide] {
-            Slide::Custom(slide) => (*slide.init)(),
+            Slide::Custom { init, .. } => init(),
             _ => CustomData::Unit,
         };
         RootModel {
@@ -151,7 +145,7 @@ impl Component<Registry> for RootModel {
                 self.current_hash = RootModel::get_slide_hash(self.current_slide);
                 RootModel::set_location_hash(&self.current_hash);
                 let custom_data = match &self.story.slides[self.current_slide] {
-                    Slide::Custom(slide) => (*slide.init)(),
+                    Slide::Custom { init, .. } => init(),
                     _ => CustomData::Unit,
                 };
                 self.custom_data = custom_data;
@@ -162,7 +156,7 @@ impl Component<Registry> for RootModel {
                 self.current_hash = RootModel::get_slide_hash(self.current_slide);
                 RootModel::set_location_hash(&self.current_hash);
                 let custom_data = match &self.story.slides[self.current_slide] {
-                    Slide::Custom(slide) => (*slide.init)(),
+                    Slide::Custom { init, .. } => init(),
                     _ => CustomData::Unit,
                 };
                 self.custom_data = custom_data;
@@ -174,8 +168,8 @@ impl Component<Registry> for RootModel {
             }
             RootMessage::Custom(data) => {
                 match &self.story.slides[self.current_slide] {
-                    Slide::Custom(slide) => {
-                        (*slide.update)(&mut self.custom_data, data, context)
+                    Slide::Custom { update, .. } => {
+                        (*update)(&mut self.custom_data, data, context)
                     }
                     _ => {
                         false
@@ -286,7 +280,7 @@ impl Renderable<Registry, RootModel> for RootModel {
                 </div>
                 }
             }
-            (_, Slide::Custom(Custom { render, title, .. })) => {
+            (_, Slide::Custom { render, title, .. }) => {
                 html! {
                 <div class="slide-wrapper",>
                   <div class="slide",class="code",>
