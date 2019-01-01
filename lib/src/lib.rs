@@ -27,7 +27,7 @@ pub enum CustomData {
 /// - Title: displays a string with big font
 /// - Image: displays an image and a caption string
 /// - List: a list of items with a title
-/// - Code: a code snipped with a title
+/// - Code: a code snippet with a title
 /// - Custom: a custom component with user-defined logic
 #[derive(Clone)]
 pub enum Slide {
