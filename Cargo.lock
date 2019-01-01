@@ -1,4 +1,11 @@
 [[package]]
+name = "01_full_stack_web_development"
+version = "0.1.4"
+dependencies = [
+ "slides 0.1.4",
+]
+
+[[package]]
 name = "autocfg"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
