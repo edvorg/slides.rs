@@ -19,7 +19,7 @@ cargo new --bin example
 Add slides dependency to Cargo.toml:
 
 ```toml
-slides = "0.1.2"
+slides = "<latest version from crates.io>"
 ```
 
 Add [index.html](https://raw.githubusercontent.com/edvorg/slides.rs/master/frontend/static/index.html) and [index.css](https://raw.githubusercontent.com/edvorg/slides.rs/master/frontend/static/index.css) to **./static** directory.

@@ -7,6 +7,9 @@ use yew::prelude::*;
 use yew::services::console::ConsoleService;
 use stdweb::Value;
 use stdweb::unstable::TryInto;
+use stdweb::web::window;
+
+static PREFIX: &str = "#slide-";
 
 /// Represents a single slide.
 ///
@@ -64,6 +67,7 @@ struct Registry {
 struct RootModel {
     story: Story,
     current_slide: usize,
+    current_hash: String,
     #[allow(dead_code)]
     handle: Value,
 }
@@ -87,9 +91,13 @@ impl Component<Registry> for RootModel {
           })
         };
         let story = context.story.take().unwrap_or_else(|| Story { slides: vec!() });
+        let current_slide = RootModel::get_location_slide().unwrap_or(0);
+        let current_hash = RootModel::get_slide_hash(current_slide);
+        RootModel::set_location_hash(&current_hash);
         RootModel {
             story,
-            current_slide: 0,
+            current_slide,
+            current_hash,
             handle,
         }
     }
@@ -99,10 +107,14 @@ impl Component<Registry> for RootModel {
         match msg {
             RootMessage::Keydown(46) => {
                 self.current_slide = (slides_count + self.current_slide + 1).min(slides_count + slides_count - 1) % slides_count;
+                self.current_hash = RootModel::get_slide_hash(self.current_slide);
+                RootModel::set_location_hash(&self.current_hash);
                 true
             }
             RootMessage::Keydown(44) => {
                 self.current_slide = (slides_count + self.current_slide - 1).max(slides_count) % slides_count;
+                self.current_hash = RootModel::get_slide_hash(self.current_slide);
+                RootModel::set_location_hash(&self.current_hash);
                 true
             }
             RootMessage::Keydown(code) => {
@@ -112,6 +124,7 @@ impl Component<Registry> for RootModel {
         }
     }
 }
+
 
 impl RootModel {
     fn list_item_view(&self, string: &String) -> Html<Registry, RootModel> {
@@ -226,4 +239,23 @@ pub fn run(story: Story) {
     let app = App::<Registry, RootModel>::new(registry);
     app.mount_to_body();
     yew::run_loop();
+}
+
+impl RootModel {
+    fn get_location_slide() -> Option<usize> {
+        window().location()
+            .and_then(|l| l.hash().ok())
+            .filter(|h| h.starts_with(PREFIX))
+            .and_then(|h| h[PREFIX.len()..].parse::<usize>().ok())
+    }
+
+    fn get_slide_hash(slide: usize) -> String {
+        format!("{}{}", PREFIX, slide)
+    }
+
+    fn set_location_hash(hash: &str) {
+        js! {
+          window.location.hash = @{hash};
+        }
+    }
 }
