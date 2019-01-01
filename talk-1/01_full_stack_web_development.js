@@ -19,13 +19,13 @@ if( typeof Rust === "undefined" ) {
         if( typeof window === "undefined" && typeof process === "object" ) {
             var fs = require( "fs" );
             var path = require( "path" );
-            var wasm_path = path.join( __dirname, "01_full_stack_web_development.wasm?hash=99a87619f3ec05c87c5054d78488ae0c" );
+            var wasm_path = path.join( __dirname, "01_full_stack_web_development.wasm?hash=563cf4ad4a2b0266dcd876160226f4e0" );
             var buffer = fs.readFileSync( wasm_path );
             var mod = new WebAssembly.Module( buffer );
             var wasm_instance = new WebAssembly.Instance( mod, instance.imports );
             return instance.initialize( wasm_instance );
         } else {
-            var file = fetch( "01_full_stack_web_development.wasm?hash=99a87619f3ec05c87c5054d78488ae0c", {credentials: "same-origin"} );
+            var file = fetch( "01_full_stack_web_development.wasm?hash=563cf4ad4a2b0266dcd876160226f4e0", {credentials: "same-origin"} );
 
             var wasm_instance = ( typeof WebAssembly.instantiateStreaming === "function"
                 ? WebAssembly.instantiateStreaming( file, instance.imports )
@@ -581,8 +581,8 @@ Module.STDWEB_PRIVATE.acquire_tmp = function( dummy ) {
             "__cargo_web_snippet_46518012593da937dd5f35c2fc1c5e1dcade260b": function($0, $1, $2, $3) {
                 $1 = Module.STDWEB_PRIVATE.to_js($1);$2 = Module.STDWEB_PRIVATE.to_js($2);$3 = Module.STDWEB_PRIVATE.to_js($3);Module.STDWEB_PRIVATE.from_js($0, (function(){try{return{value:function(){return($1).insertBefore(($2),($3));}(),success:true};}catch(error){return{error:error,success:false};}})());
             },
-            "__cargo_web_snippet_598895595ca68dba4c070535a98058e64c084e2c": function($0, $1) {
-                $1 = Module.STDWEB_PRIVATE.to_js($1);Module.STDWEB_PRIVATE.from_js($0, (function(){return($1).getMilliseconds();})());
+            "__cargo_web_snippet_522594a9ab8b9160e7c4bc14704529f31eacd977": function($0, $1) {
+                $1 = Module.STDWEB_PRIVATE.to_js($1);Module.STDWEB_PRIVATE.from_js($0, (function(){return($1).getTime();})());
             },
             "__cargo_web_snippet_5f2de863e7bb58233bb2e0cbc667459024a8c072": function($0, $1) {
                 $1 = Module.STDWEB_PRIVATE.to_js($1);Module.STDWEB_PRIVATE.from_js($0, (function(){window.location.hash=($1);})());
