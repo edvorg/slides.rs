@@ -19,13 +19,13 @@ if( typeof Rust === "undefined" ) {
         if( typeof window === "undefined" && typeof process === "object" ) {
             var fs = require( "fs" );
             var path = require( "path" );
-            var wasm_path = path.join( __dirname, "01_full_stack_web_development.wasm?hash=5b688ae4ffb71a941ec3deb8cb6e0d9d" );
+            var wasm_path = path.join( __dirname, "01_full_stack_web_development.wasm?hash=ee8e56510b5dabbf8526b2215641711c" );
             var buffer = fs.readFileSync( wasm_path );
             var mod = new WebAssembly.Module( buffer );
             var wasm_instance = new WebAssembly.Instance( mod, instance.imports );
             return instance.initialize( wasm_instance );
         } else {
-            var file = fetch( "01_full_stack_web_development.wasm?hash=5b688ae4ffb71a941ec3deb8cb6e0d9d", {credentials: "same-origin"} );
+            var file = fetch( "01_full_stack_web_development.wasm?hash=ee8e56510b5dabbf8526b2215641711c", {credentials: "same-origin"} );
 
             var wasm_instance = ( typeof WebAssembly.instantiateStreaming === "function"
                 ? WebAssembly.instantiateStreaming( file, instance.imports )
@@ -670,6 +670,9 @@ Module.STDWEB_PRIVATE.acquire_tmp = function( dummy ) {
             },
             "__cargo_web_snippet_dc2fd915bd92f9e9c6a3bd15174f1414eee3dbaf": function() {
                 console.error( 'Encountered a panic!' );
+            },
+            "__cargo_web_snippet_dc60751e0e113afd6490309f9ee63b8d087872d2": function($0, $1) {
+                $1 = Module.STDWEB_PRIVATE.to_js($1);Module.STDWEB_PRIVATE.from_js($0, (function(){console.log(($1));})());
             },
             "__cargo_web_snippet_de2896a7ccf316486788a4d0bc433c25d2f1a12b": function($0) {
                 var r = Module.STDWEB_PRIVATE.acquire_js_reference( $0 );return (r instanceof DOMException) && (r.name === "NotFoundError");
