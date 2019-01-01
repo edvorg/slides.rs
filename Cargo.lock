@@ -3,6 +3,8 @@ name = "01_full_stack_web_development"
 version = "0.1.4"
 dependencies = [
  "slides 0.1.4",
+ "stdweb 0.4.12 (registry+https://github.com/rust-lang/crates.io-index)",
+ "yew 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

@@ -7,3 +7,5 @@ edition = "2018"
 
 [dependencies]
 slides = { path = "../../lib" }
+yew = "0.4.0"
+stdweb = "0.4.10"

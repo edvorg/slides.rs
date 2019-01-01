@@ -8,8 +8,25 @@ use yew::services::console::ConsoleService;
 use stdweb::Value;
 use stdweb::unstable::TryInto;
 use stdweb::web::window;
+use yew::services::timeout::TimeoutService;
 
 static PREFIX: &str = "#slide-";
+
+#[derive(Debug)]
+pub enum CustomData {
+    Number(u64),
+    String(String),
+    StringRef(&'static str),
+    Unit,
+}
+
+#[derive(Clone)]
+pub struct Custom {
+    pub title: String,
+    pub init: Box<&'static Fn() -> CustomData>,
+    pub update: Box<&'static Fn(&mut CustomData, CustomData, &mut Env<Registry, RootModel>) -> bool>,
+    pub render: Box<&'static Fn(&CustomData) -> Html<Registry, RootModel>>,
+}
 
 /// Represents a single slide.
 ///
@@ -24,6 +41,7 @@ pub enum Slide {
     Image(&'static str, Option<String>, String),
     List(String, Vec<String>),
     Code(String, String),
+    Custom(Custom),
 }
 
 impl Slide {
@@ -52,6 +70,18 @@ impl Slide {
     pub fn code(title: &str, code: &str) -> Slide {
         Slide::Code(String::from(title), String::from(code))
     }
+
+    /// short-hand function for creating a list slide
+    pub fn custom(title: &str, init: &'static Fn() -> CustomData, update: &'static Fn(&mut CustomData, CustomData, &mut Env<Registry, RootModel>) -> bool, render: &'static Fn(&CustomData) -> Html<Registry, RootModel>) -> Slide {
+        Slide::Custom(
+            Custom {
+                title: String::from(title),
+                init: Box::new(init),
+                update: Box::new(update),
+                render: Box::new(render),
+            }
+        )
+    }
 }
 
 /// Represents a story (list of slides).
@@ -59,28 +89,31 @@ pub struct Story {
     pub slides: Vec<Slide>,
 }
 
-struct Registry {
-    console: ConsoleService,
+pub struct Registry {
+    pub console: ConsoleService,
     story: Option<Story>,
+    pub timeout: TimeoutService,
 }
 
-struct RootModel {
+pub struct RootModel {
     story: Story,
     current_slide: usize,
     current_hash: String,
     #[allow(dead_code)]
     handle: Value,
+    custom_data: CustomData,
 }
 
-enum RootMessage {
+pub enum RootMessage {
     Keydown(u32),
+    Custom(CustomData),
 }
 
 impl Component<Registry> for RootModel {
     type Message = RootMessage;
     type Properties = ();
 
-    fn create(_props: <Self as Component<Registry>>::Properties, context: &mut Env<Registry, Self>) -> Self {
+    fn create(_props: Self::Properties, context: &mut Env<Registry, Self>) -> Self {
         let callback = context.send_back(|code: u32| RootMessage::Keydown(code));
         let js_callback = move |v: Value| { callback.emit(v.try_into().unwrap()) };
         let handle = js! {
@@ -94,32 +127,57 @@ impl Component<Registry> for RootModel {
         let current_slide = RootModel::get_location_slide().unwrap_or(0);
         let current_hash = RootModel::get_slide_hash(current_slide);
         RootModel::set_location_hash(&current_hash);
+        let custom_data = match &story.slides[current_slide] {
+            Slide::Custom(slide) => (*slide.init)(),
+            _ => CustomData::Unit,
+        };
         RootModel {
             story,
             current_slide,
             current_hash,
             handle,
+            custom_data,
         }
     }
 
-    fn update(&mut self, msg: <Self as Component<Registry>>::Message, context: &mut Env<Registry, Self>) -> bool {
+    fn update(&mut self, msg: Self::Message, context: &mut Env<Registry, Self>) -> bool {
         let slides_count = self.story.slides.len();
         match msg {
             RootMessage::Keydown(46) => {
                 self.current_slide = (slides_count + self.current_slide + 1).min(slides_count + slides_count - 1) % slides_count;
                 self.current_hash = RootModel::get_slide_hash(self.current_slide);
                 RootModel::set_location_hash(&self.current_hash);
+                let custom_data = match &self.story.slides[self.current_slide] {
+                    Slide::Custom(slide) => (*slide.init)(),
+                    _ => CustomData::Unit,
+                };
+                self.custom_data = custom_data;
                 true
             }
             RootMessage::Keydown(44) => {
                 self.current_slide = (slides_count + self.current_slide - 1).max(slides_count) % slides_count;
                 self.current_hash = RootModel::get_slide_hash(self.current_slide);
                 RootModel::set_location_hash(&self.current_hash);
+                let custom_data = match &self.story.slides[self.current_slide] {
+                    Slide::Custom(slide) => (*slide.init)(),
+                    _ => CustomData::Unit,
+                };
+                self.custom_data = custom_data;
                 true
             }
             RootMessage::Keydown(code) => {
                 context.console.log(&format!("Unhandled key {}", code));
                 false
+            }
+            RootMessage::Custom(data) => {
+                match &self.story.slides[self.current_slide] {
+                    Slide::Custom(slide) => {
+                        (*slide.update)(&mut self.custom_data, data, context)
+                    }
+                    _ => {
+                        false
+                    }
+                }
             }
         }
     }
@@ -218,8 +276,20 @@ impl Renderable<Registry, RootModel> for RootModel {
                 <div class="slide-wrapper",>
                   <div class="slide",class="code",>
                     <div class="content",>
-                      <div> { title } </div>
+                      { self.title_view(title) }
                       <pre><code> { code } </code></pre>
+                    </div>
+                  </div>
+                </div>
+                }
+            }
+            (_, Slide::Custom(Custom { render, title, .. })) => {
+                html! {
+                <div class="slide-wrapper",>
+                  <div class="slide",class="code",>
+                    <div class="content",>
+                      { self.title_view(title) }
+                      { (*render)(&self.custom_data) }
                     </div>
                   </div>
                 </div>
@@ -235,6 +305,7 @@ pub fn run(story: Story) {
     let registry = Registry {
         console: ConsoleService::new(),
         story: Some(story),
+        timeout: TimeoutService::new(),
     };
     let app = App::<Registry, RootModel>::new(registry);
     app.mount_to_body();

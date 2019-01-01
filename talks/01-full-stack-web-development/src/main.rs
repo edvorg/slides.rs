@@ -1,6 +1,46 @@
+#[macro_use]
+extern crate yew;
+#[macro_use]
+extern crate stdweb;
+
 use slides::run;
 use slides::Story;
 use slides::Slide;
+use slides::CustomData;
+use slides::RootMessage;
+use stdweb::unstable::TryInto;
+
+static COUNT_TO_MAX: u32 = 500000;
+static COUNT_TO_TIMES_JS: u32 = 15000;
+static COUNT_TO_TIMES_RUST: u32 = 15000_00000;
+
+fn perf() -> f64 {
+    js! (
+      return performance.now();
+    ).try_into().unwrap()
+}
+
+fn count_js(max: u32, times: u32) {
+    js! {
+      for (let j = 0; j < @{times}; ++j) {
+        let res = 0;
+        for (let i = 0; i < @{max}; ++i) {
+          res++;
+        }
+      }
+    }
+}
+
+fn count_rust(max: u32, times: u32) {
+    let mut res = 0u64;
+    for _j in 0..times {
+        for _i in 0..max {
+            res = res + 1;
+        };
+    }
+    let s = format!("{}", res);
+    js! { console.log(@{s}); }
+}
 
 fn main() {
     run(
@@ -69,6 +109,68 @@ fn main() {
                     "awesome-wasm-runtimes - 20+ runtimes in different languages on github",
                 ]),
                 Slide::image_with_title("links.png", "Links", "https://rustmith.rocks/links"),
+                Slide::custom(
+                    "Benchmark Rust (Counting)",
+                    &|| CustomData::Unit,
+                    &|state, message, _| {
+                        match message {
+                            CustomData::StringRef("rust") => {
+                                let started_at = perf();
+                                count_rust(COUNT_TO_MAX, COUNT_TO_TIMES_RUST);
+                                let finished_at = perf();
+                                *state = CustomData::Number((finished_at - started_at) as u64);
+                                true
+                            }
+                            CustomData::StringRef("js") => {
+                                let started_at = perf();
+                                count_js(COUNT_TO_MAX, COUNT_TO_TIMES_JS);
+                                let finished_at = perf();
+                                *state = CustomData::Number((finished_at - started_at) as u64);
+                                true
+                            }
+                            _ => {
+                                false
+                            }
+                        }
+                    },
+                    &|state| {
+                        let result_view = || {
+                            match state {
+                                CustomData::Number(result) => {
+                                    html! {
+                                      <p>
+                                        <span> { format!("Result: {}ms", result) } </span>
+                                      </p>
+                                    }
+                                }
+                                _ => {
+                                    html! {
+                                      <p>
+                                        { "Run benchmark to see measurements" }
+                                      </p>
+                                    }
+                                }
+                            }
+                        };
+                        html! {
+                          <div>
+                            <p>
+                            <div>
+                              <span> { format!("Count to {}, {} times in Rust ", COUNT_TO_MAX, COUNT_TO_TIMES_RUST) } </span>
+                              <button onclick=|_| RootMessage::Custom(CustomData::StringRef("rust")) ,> { "Benchmark" } </button>
+                            </div>
+                            </p>
+                            <p>
+                            <div>
+                              <span> { format!("Count to {}, {} times in JavaScript ", COUNT_TO_MAX, COUNT_TO_TIMES_JS) } </span>
+                              <button onclick=|_| RootMessage::Custom(CustomData::StringRef("js")) ,> { "Benchmark" } </button>
+                            </div>
+                            </p>
+                            { result_view() }
+                          </div>
+                        }
+                    }
+                ),
             )
         }
     );
