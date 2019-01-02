@@ -10,9 +10,9 @@ use slides::CustomData;
 use slides::RootMessage;
 use stdweb::unstable::TryInto;
 
-static COUNT_TO_MAX: u32 = 500000;
+static COUNT_TO_MAX: u32 = 1000000;
 static COUNT_TO_TIMES_JS: u32 = 15000;
-static COUNT_TO_TIMES_RUST: u32 = 15000_00000;
+static COUNT_TO_TIMES_RUST: u32 = 15000;
 
 fn perf() -> f64 {
     js! (
@@ -22,12 +22,7 @@ fn perf() -> f64 {
 
 fn count_js(max: u32, times: u32) {
     js! {
-      for (let j = 0; j < @{times}; ++j) {
-        let res = 0;
-        for (let i = 0; i < @{max}; ++i) {
-          res++;
-        }
-      }
+      window.count_js(@{max}, @{times});
     }
 }
 
@@ -39,7 +34,7 @@ fn count_rust(max: u32, times: u32) {
         };
     }
     let s = format!("{}", res);
-    js! { console.log(@{s}); }
+    js! { console.log("rust:", @{s}); }
 }
 
 fn main() {
