@@ -40,20 +40,20 @@ h1, h2, h3, h4, h5 {
 }
 
 .slide.image > .content > img {
-  max-width: 400px;
-  max-height: 200px;
+  max-width: 550px;
+  max-height: 350px;
 }
 
 .slide.list > .content {
   margin-left: auto;
   margin-right: auto;
-  max-width: 400px;
-  max-height: 200px;
+  max-width: 550px;
+  max-height: 350px;
 }
 
 .slide.code > .content {
   margin-left: auto;
   margin-right: auto;
-  max-width: 400px;
-  max-height: 200px;
+  max-width: 550px;
+  max-height: 350px;
 }
