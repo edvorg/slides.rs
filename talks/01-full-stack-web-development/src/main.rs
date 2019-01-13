@@ -300,9 +300,9 @@ fn main() {
                         }
                     }
                 ),
-                // how does wasm look
-                // how to run wasm module in javascript
-                // how to view wasm module memory
+                Slide::image_with_title("wasm-wat.png", "How does wasm look like?", "Human readable representation of function that's summing it's arguments"),
+                Slide::image_with_title("wasm-loading.png", "Loading WASM module", "Wasm module can be loaded and executed in just a few lines of code"),
+                Slide::image_with_title("wasm-loading.png", "Wasm module memory access", "JavaScript environment has easy access to WASM module memory"),
                 Slide::list("Rust on WASM", &[
                     "Use WebAssembly imports/exports",
                     "wasm-bindgen and js-sys/web-sys",
@@ -338,13 +338,14 @@ fn main() {
                     "CPU intensive computations in browser",
                     "Web games",
                     "Ports of existing rust software to browser",
+                    "Small optimizations in Rust in existing JavaScript",
                 ]),
                 Slide::list("What would 100% Rust web app look like?", &[
                     "Effortless interop with JS",
                     "Rust frontend framework",
-                    "Rust backend framework (rocket)",
-                    "Code sharing between frontend and backend (cargo workspaces)",
-                    "Build tool extension (cargo web)",
+                    "Rust backend framework",
+                    "Code sharing between frontend and backend",
+                    "Simple workflow",
                 ]),
                 Slide::image_with_title("stdweb-exports.png", "Stdweb", "Exporting Rust function to JavaScript"),
                 Slide::image_with_title("stdweb-calling.png", "Stdweb", "Calling exported function from JavaScript"),
