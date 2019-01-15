@@ -108,11 +108,18 @@ fn main() {
                     "WebAssembly",
                 ]),
                 Slide::image("wasm-logo.png", "WebAssembly (abbreviated WASM) is a binary instruction format for a stack-based virtual machine."),
+                Slide::image_with_title("wasm-support.png", "Support", "WebAssembly VM is built into all modern web browsers"),
                 Slide::list("WebAssembly strength", &[
                     "Low-level",
                     "Efficient and fast",
                     "Safe",
                     "Portable",
+                ]),
+                Slide::list("Alternative targets", &[
+                    "Wasmer - standalone WASM runtime in Rust",
+                    "WasmJIT - runs WASM in linux kernel space",
+                    "Nebulet - runs WASM at ring 0",
+                    "awesome-wasm-runtimes - 20+ wasm runtimes in different languages on github",
                 ]),
                 Slide::custom(
                     "Benchmark Rust (Counting)",
@@ -397,12 +404,6 @@ fn main() {
                     "Higher learning curve",
                     "Lack of web libraries for rust",
                     "Code needs to be compiled",
-                ]),
-                Slide::list("Alternative targets", &[
-                    "Wasmer - standalone WASM runtime in Rust",
-                    "WasmJIT - runs WASM in linux kernel space",
-                    "Nebulet - runs WASM at ring 0",
-                    "awesome-wasm-runtimes - 20+ wasm runtimes in different languages on github",
                 ]),
                 Slide::image_with_title("links.png", "Links", "https://rustmith.rocks/links"),
             )
