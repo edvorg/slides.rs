@@ -389,7 +389,7 @@ fn main() {
                 Slide::image_with_title("yew-renderable.png", "Make Yew component renderable", "Every component has to implement Renderable trait"),
                 Slide::image_with_title("yew-component-props.png", "Yew component properties", "Properties allow passing data from parent to child"),
                 Slide::image_with_title("yew-component-embedding.png", "Composing yew components", "All component properties are type-checked at compile time"),
-                Slide::image_with_title("cargo-web-dev.png", "Running project in dev mode", "'cargo web start --auto-reload' allows quick compile-run-test loop due to incremental comilation"),
+                Slide::image_with_title("cargo-web-dev.png", "Running project in dev mode", "'cargo web start --auto-reload' allows quick compile-run-test loop due to incremental compilation"),
                 Slide::image_with_title("cargo-web-release.png", "Building project for release mode", "'cargo web deploy' compiles release version and copies all assets to target/deploy"),
                 Slide::image_with_title("conditional-compilation.png", "Conditional compilation", "'target_arch' configuration allows to conditionally compile code based on target"),
                 Slide::image_with_title("bindings-interface.png", "Rust bindings for JS code", "Define an interface and common functionality"),
