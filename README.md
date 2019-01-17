@@ -47,3 +47,7 @@ Start project with
 ```shell
 cargo web start --auto-reload
 ```
+
+## Example talks
+
+[Full-Stack Web Development in Rust](https://edvorg.github.io/slides.rs/talk-1)
