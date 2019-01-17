@@ -389,13 +389,22 @@ fn main() {
                 Slide::image_with_title("yew-renderable.png", "Make Yew component renderable", "Every component has to implement Renderable trait"),
                 Slide::image_with_title("yew-component-props.png", "Yew component properties", "Properties allow passing data from parent to child"),
                 Slide::image_with_title("yew-component-embedding.png", "Composing yew components", "All component properties are type-checked at compile time"),
+                Slide::image_with_title("yew-component-message.png", "Adding interactivity", "Component behavior is implemented using message passing"),
                 Slide::image_with_title("cargo-web-dev.png", "Running project in dev mode", "'cargo web start --auto-reload' allows quick compile-run-test loop due to incremental compilation"),
-                Slide::image_with_title("cargo-web-release.png", "Building project for release mode", "'cargo web deploy' compiles release version and copies all assets to target/deploy"),
+                Slide::image_with_title("cargo-web-release.png", "Building project for release mode", "'cargo web deploy' compiles release version and copies all assets to target/deploy. Generated frontend.js code handles wasm loading."),
                 Slide::image_with_title("conditional-compilation.png", "Conditional compilation", "'target_arch' configuration allows to conditionally compile code based on target"),
                 Slide::image_with_title("bindings-interface.png", "Rust bindings for JS code", "Define an interface and common functionality"),
                 Slide::image_with_title("bindings-impl.png", "Rust bindings for JS code", "Provide am implementation"),
                 Slide::image_with_title("porting-snippet.png", "Porting JS code to rust", "Porting JavaScript code to Rust is surprisingly easy. Move code to js! block first"),
                 Slide::image_with_title("porting-impl.png", "Porting js code to rust", "Unwrap js! block and fix compilation errors"),
+                Slide::list("Rocket", &[
+                    "Performant",
+                    "Type-safe",
+                    "Little boilerplate",
+                    "Extensible",
+                ]),
+                Slide::image_with_title("rocket-crud.png", "Backend with rocket", "Making API using Rocket requires very little boilerplate. Rust type system makes error handling easy"),
+                Slide::image_with_title("rocket-conversions.png", "Backend with rocket", "Making API using Rocket requires very little boilerplate. Rust type system makes error handling easy"),
                 // show how to define rocket handlers
                 Slide::title("Demo"), // Demo https://github.com/edvorg/rustmith
                 Slide::list("Pros", &[
@@ -411,7 +420,20 @@ fn main() {
                     "Lack of web libraries for rust",
                     "Code needs to be compiled",
                 ]),
-                Slide::image_with_title("links.png", "Links", "https://rustmith.rocks/links"),
+                Slide::list("Links", &[
+                    "rustwasm.github.io/wasm-bindgen - high-level interactions between wasm and JS",
+                    "github.com/koute/stdweb - rust standard library for web",
+                    "serde.rs - serialization library for rust",
+                    "github.com/WebAssembly/wabt - WebAssembly Binary Toolkit",
+                    "github.com/WebAssembly/binaryen - Compiler toolchain for WebAssembly",
+                    "github.com/koute/cargo-web - cargo extension for frontend development",
+                    "github.com/DenisKolodin/yew - frontend framework for rust",
+                    "github.com/David-OConnor/seed - frontend framework built with wasm-bindgen",
+                    "rocket.rs - backend framework for rust",
+                    "github.com/appcypher/awesome-wasm-runtimes - alternative runtimes for wasm",
+                    "github.com/edvorg/rustmith - rocksmith clone in rust",
+                    "github.com/edvorg/slides.rs - tiny library for building presentations in rust",
+                ]),
             )
         }
     );
