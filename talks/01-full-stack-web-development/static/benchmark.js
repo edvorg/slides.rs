@@ -1,10 +1,9 @@
-window.count_js = function (max, times) {
-    for (let j = 0; j < times; ++j) {
-        let res = 0;
-        for (let i = 0; i < max; ++i) {
-            res++;
-        }
+window.count_js = function (max) {
+    let res = 0;
+    for (let i = 0; i < max; ++i) {
+        res++;
     }
+    console.log('js: ', res);
 }
 
 window.substring_data = "foobarbazqux";
