@@ -121,7 +121,7 @@ fn main() {
                 ]),
                 Slide::list("Essential tools", &[
                     "WABT: WebAssembly binary toolkit (wasm2wat, wat2wasm, wasm-interp)",
-                    "Binaryen (wasm-opt, asm2wasm, wasm2js, wasm-sheel)",
+                    "Binaryen (wasm-opt, asm2wasm, wasm2js)",
                 ]),
                 Slide::image_with_title("wasm-wat.png", "What does WAT module look like?", "Human readable representation of module exporting function that's summing it's arguments"),
                 Slide::image_with_title("wat2wasm.png", "Converting WAT to WASM", "WAT representation can be converted to executable WASM module"),
